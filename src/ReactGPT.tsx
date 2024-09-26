@@ -1,6 +1,10 @@
 
 export const ReactGPT = () => {
     return (
-        <div>ReactGPT</div>
+        <div
+            className="text-3xl font-bold underline"
+        >
+            ReactGPT
+        </div>
     )
 }
