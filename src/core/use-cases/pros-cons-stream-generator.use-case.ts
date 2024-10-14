@@ -1,7 +1,7 @@
 import type { OrthographyResponse, ProsConsResponse } from "../../interfaces";
 
 
-export async function* prosConsStreamGeneratorUseCase(prompt: string) {
+export async function* prosConsStreamGeneratorUseCase(prompt: string, abortSignal: AbortSignal) {
     try {
 
         const resp = await fetch(`${import.meta.env.VITE_GPT_API}/pros-cons-discusser-stream`, {
@@ -9,8 +9,8 @@ export async function* prosConsStreamGeneratorUseCase(prompt: string) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ prompt })
-            //TODO: AbortSignal
+            body: JSON.stringify({ prompt }),
+            signal: abortSignal,
         });
 
         if (!resp.ok) {
