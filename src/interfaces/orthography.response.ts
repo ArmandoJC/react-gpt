@@ -2,6 +2,6 @@
 
 export interface OrthographyResponse {
     userScore: number;
-    errores: string[];
+    errors: string[];
     message: string;
 }
