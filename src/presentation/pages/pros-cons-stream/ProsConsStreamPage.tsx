@@ -22,12 +22,32 @@ export const ProsConsStreamPage = () => {
         setMessages((prev) => [...prev, { text: text, isGpt: false }]);
 
         //TODO: UseCase
-        await prosConsStreamUseCase(text)
+        const reader = await prosConsStreamUseCase(text)
 
         setIsLoading(false);
 
-        // Todo: Añadir el mensaje de isGPT en true
+        if (!reader) return alert('No se pudo generar el reader');
+        // generar el último mensaje
 
+        const decoder = new TextDecoder();
+
+        let message = ''
+        setMessages((messages) => [...messages, { text: message, isGpt: true }]);
+
+        while (true) {
+            const { value, done } = await reader.read();
+            if (done) break;
+
+            const decodedChunk = decoder.decode(value, { stream: true });
+            message += decodedChunk;
+            setMessages((messages) => {
+                const newMessages = [...messages];
+                newMessages[newMessages.length - 1].text = message;
+                return newMessages
+                // [...messages, { text: message, isGpt: true }]);
+            })
+
+        }
 
     }
 
@@ -44,7 +64,7 @@ export const ProsConsStreamPage = () => {
                         messages.map((message, index) => (
                             message.isGpt
                                 ? (
-                                    <GptMessage key={index} text="Esto es de OpenAI" />
+                                    <GptMessage key={index} text={message.text} />
                                 )
                                 : (
                                     <MyMessage key={index} text={message.text} />
