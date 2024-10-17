@@ -23,11 +23,10 @@ export const AudioToTextPage = () => {
 
         //TODO: UseCase
         const resp = await audioToTextUseCase(audioFile, text)
+        setIsLoading(false);
+        if (!resp) return;
 
         console.log({ resp })
-
-
-        setIsLoading(false);
 
         // Todo: Añadir el mensaje de isGPT en true
 
