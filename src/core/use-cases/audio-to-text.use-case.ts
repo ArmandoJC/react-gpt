@@ -1,4 +1,4 @@
-import { AudioToTextResponse } from "../../interfaces";
+import type { AudioToTextResponse } from "../../interfaces";
 
 
 export const audioToTextUseCase = async (audioFile: File, prompt?: string) => {
@@ -23,7 +23,7 @@ export const audioToTextUseCase = async (audioFile: File, prompt?: string) => {
         }
 
         const data = await resp.json() as AudioToTextResponse;
-        // console.log({ data })
+        console.log({ data })
 
         return data
 
