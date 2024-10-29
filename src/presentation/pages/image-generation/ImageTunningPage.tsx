@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { GptMessage, MyMessage, TypingLoader, TextMessageBox, GptMessageImage } from '../../components';
+import { GptMessage, MyMessage, TypingLoader, TextMessageBox, GptMessageImage, GptMessageSelectableImage } from '../../components';
 import { imageGenerationUseCase, imageVariationUseCase } from '../../../core/use-cases';
 
 interface Message {
@@ -18,7 +18,16 @@ interface Message {
 export const ImageTunningPage = () => {
 
     const [isLoading, setIsLoading] = useState(false);
-    const [messages, setMessages] = useState<Message[]>([])
+    const [messages, setMessages] = useState<Message[]>([
+        {
+            isGpt: true,
+            text: 'Imagen base',
+            info: {
+                alt: 'Imagen base',
+                imageUrl: 'http://localhost:3000/gpt/image-generation/1730219660292.png'
+            }
+        }
+    ])
 
     const [originalImageAndMask, setOriginalImageAndMask] = useState({
         original: undefined as string | undefined,
@@ -106,7 +115,7 @@ export const ImageTunningPage = () => {
                             messages.map((message, index) => (
                                 message.isGpt
                                     ? (
-                                        <GptMessageImage
+                                        <GptMessageSelectableImage
                                             key={index}
                                             text={message.text}
                                             imageUrl={message.info?.imageUrl!}
@@ -116,6 +125,16 @@ export const ImageTunningPage = () => {
                                                 mask: undefined,
                                             })}
                                         />
+                                        // <GptMessageImage
+                                        //     key={index}
+                                        //     text={message.text}
+                                        //     imageUrl={message.info?.imageUrl!}
+                                        //     alt={message.info?.alt!}
+                                        //     onImageSelected={url => setOriginalImageAndMask({
+                                        //         original: url,
+                                        //         mask: undefined,
+                                        //     })}
+                                        // />
                                     )
                                     : (
                                         <MyMessage key={index} text={message.text} />
