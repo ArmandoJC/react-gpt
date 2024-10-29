@@ -29,7 +29,6 @@ export const imageGenerationUseCase = async (prompt: string, originalImage?: str
 
         const { url, revised_prompt: alt } = await resp.json();
 
-        console.log({ url, alt })
         return { url, alt }
 
 
