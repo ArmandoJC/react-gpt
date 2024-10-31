@@ -1,12 +1,10 @@
 import { useState } from 'react';
-import { GptMessage, MyMessage, TypingLoader, TextMessageBox, TextMessageBoxSelect, GptMessageAudio } from '../../components';
+import { GptMessage, MyMessage, TypingLoader, TextMessageBoxSelect, GptMessageAudio } from '../../components';
 import { textToAudioUseCase } from '../../../core/use-cases';
-
 
 const displaimer = `### ¿Qué audio quieres generar hoy?
 * Todo el audio generado es por AI
 `
-
 const voices = [
     { id: "nova", text: "Nova" },
     { id: "alloy", text: "Alloy" },
@@ -31,34 +29,17 @@ interface AudioMessage {
 
 type Message = TextMessage | AudioMessage;
 
-
-
-
-
 export const TextToAudioPage = () => {
-
     const [isLoading, setIsLoading] = useState(false);
     const [messages, setMessages] = useState<Message[]>([])
-
-
     const handlePost = async (text: string, selectedVoice: string) => {
-
         setIsLoading(true);
         setMessages((prev) => [...prev, { text: text, isGpt: false, type: 'text' }]);
-
         const { ok, message, audioUrl } = await textToAudioUseCase(text, selectedVoice);
         setIsLoading(false);
-
         if (!ok) return;
-
         setMessages((prev) => [...prev, { text: `${selectedVoice} - ${message}`, isGpt: true, type: 'audio', audio: audioUrl! }]);
-
-        // Todo: Añadir el mensaje de isGPT en true
-
-
     }
-
-
 
     return (
         <div className="chat-container">
@@ -66,7 +47,6 @@ export const TextToAudioPage = () => {
                 <div className="grid grid-cols-12 gap-y-2">
                     {/* Bienvenida */}
                     <GptMessage text={displaimer} />
-
                     {
                         messages.map((message, index) => (
                             message.isGpt
@@ -89,11 +69,8 @@ export const TextToAudioPage = () => {
                                 : (
                                     <MyMessage key={index} text={message.text} />
                                 )
-
                         ))
                     }
-
-
                     {
                         isLoading && (
                             <div className="col-start-1 col-end-12 fade-in">
@@ -101,20 +78,13 @@ export const TextToAudioPage = () => {
                             </div>
                         )
                     }
-
-
                 </div>
             </div>
-
-
             <TextMessageBoxSelect
                 onSendMessage={handlePost}
                 placeholder='Escribe aquí lo que deseas'
-                // disableCorrections
                 options={voices}
-
             />
-
         </div>
     );
 };

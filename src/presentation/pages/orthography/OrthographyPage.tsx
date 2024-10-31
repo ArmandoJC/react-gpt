@@ -12,22 +12,13 @@ interface Message {
     }
 }
 
-
-
-
 export const OrthographyPage = () => {
-
     const [isLoading, setIsLoading] = useState(false);
     const [messages, setMessages] = useState<Message[]>([])
-
-
     const handlePost = async (text: string) => {
-
         setIsLoading(true);
         setMessages((prev) => [...prev, { text: text, isGpt: false }]);
-
         const { ok, message, errors, userScore } = await orthographyUseCase(text)
-        console.log({ ok, message, errors, userScore })
         if (!ok) {
             setMessages((prev) => [...prev, { text: 'No se pudo realizar la corrección', isGpt: true }]);
         } else {
@@ -41,17 +32,8 @@ export const OrthographyPage = () => {
                 }
             }]);
         }
-
-        // console.log({ data })
-
         setIsLoading(false);
-
-        // Todo: Añadir el mensaje de isGPT en true
-
-
     }
-
-
 
     return (
         <div className="chat-container">
@@ -59,7 +41,6 @@ export const OrthographyPage = () => {
                 <div className="grid grid-cols-12 gap-y-2">
                     {/* Bienvenida */}
                     <GptMessage text="Hola, puedes escribir tu texto en español, y te ayudo con las correcciones" />
-
                     {
                         messages.map((message, index) => (
                             message.isGpt
@@ -75,11 +56,8 @@ export const OrthographyPage = () => {
                                 : (
                                     <MyMessage key={index} text={message.text} />
                                 )
-
                         ))
                     }
-
-
                     {
                         isLoading && (
                             <div className="col-start-1 col-end-12 fade-in">
@@ -87,18 +65,13 @@ export const OrthographyPage = () => {
                             </div>
                         )
                     }
-
-
                 </div>
             </div>
-
-
             <TextMessageBox
                 onSendMessage={handlePost}
                 placeholder='Escribe aquí lo que deseas'
                 disableCorrections
             />
-
         </div>
     );
 };

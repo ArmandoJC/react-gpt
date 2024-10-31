@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { GptMessage, MyMessage, TypingLoader, TextMessageBox, GptMessageImage, GptMessageSelectableImage } from '../../components';
+import { GptMessage, MyMessage, TypingLoader, TextMessageBox, GptMessageSelectableImage } from '../../components';
 import { imageGenerationUseCase, imageVariationUseCase } from '../../../core/use-cases';
 
 interface Message {
@@ -12,11 +12,7 @@ interface Message {
     }
 }
 
-
-
-
 export const ImageTunningPage = () => {
-
     const [isLoading, setIsLoading] = useState(false);
     const [messages, setMessages] = useState<Message[]>([
         {
@@ -29,20 +25,15 @@ export const ImageTunningPage = () => {
             }
         }
     ])
-
     const [originalImageAndMask, setOriginalImageAndMask] = useState({
         original: undefined as string | undefined,
         mask: undefined as string | undefined,
     })
-
-
     const handleVariation = async () => {
         setIsLoading(true);
         const res = await imageVariationUseCase(originalImageAndMask.original!);
         setIsLoading(false);
-
         if (!res) return;
-
         setMessages((prev) => [
             ...prev,
             {
@@ -55,20 +46,14 @@ export const ImageTunningPage = () => {
             }
         ])
     }
-
-
     const handlePost = async (text: string) => {
-
         setIsLoading(true);
         setMessages((prev) => [...prev, { text: text, isGpt: false }]);
-
         const imageInfo = await imageGenerationUseCase(text);
         setIsLoading(false);
-
         if (!imageInfo) {
             return setMessages((prev) => [...prev, { text: 'No se pudo generar la imagen', isGpt: true }])
         }
-
         setMessages(prev => [
             ...prev,
             {
@@ -80,19 +65,10 @@ export const ImageTunningPage = () => {
                 }
             }
         ])
-
-
-        // Todo: Añadir el mensaje de isGPT en true
-
-
     }
 
-
-
     return (
-
         <>
-
             {
                 originalImageAndMask.original && (
                     <div className='fixed flex flex-col items-center top-10 right-10 z-10 fade-in'>
@@ -111,7 +87,6 @@ export const ImageTunningPage = () => {
                     <div className="grid grid-cols-12 gap-y-2">
                         {/* Bienvenida */}
                         <GptMessage text="¿Qué imagen deseas generar hoy?" />
-
                         {
                             messages.map((message, index) => (
                                 message.isGpt
@@ -126,25 +101,12 @@ export const ImageTunningPage = () => {
                                                 mask: maskImageUrl,
                                             })}
                                         />
-                                        // <GptMessageImage
-                                        //     key={index}
-                                        //     text={message.text}
-                                        //     imageUrl={message.info?.imageUrl!}
-                                        //     alt={message.info?.alt!}
-                                        //     onImageSelected={url => setOriginalImageAndMask({
-                                        //         original: url,
-                                        //         mask: undefined,
-                                        //     })}
-                                        // />
                                     )
                                     : (
                                         <MyMessage key={index} text={message.text} />
                                     )
-
                             ))
                         }
-
-
                         {
                             isLoading && (
                                 <div className="col-start-1 col-end-12 fade-in">
@@ -152,18 +114,13 @@ export const ImageTunningPage = () => {
                                 </div>
                             )
                         }
-
-
                     </div>
                 </div>
-
-
                 <TextMessageBox
                     onSendMessage={handlePost}
                     placeholder='Escribe aquí lo que deseas'
                     disableCorrections
                 />
-
             </div>
         </>
     );

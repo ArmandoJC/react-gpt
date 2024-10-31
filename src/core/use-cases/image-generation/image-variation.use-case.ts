@@ -1,9 +1,8 @@
-type GeneratedImage = Image | null;
-
 interface Image {
     url: string;
     alt: string;
 }
+type GeneratedImage = Image | null;
 
 export const imageVariationUseCase = async (originalImage: string): Promise<GeneratedImage> => {
     try {
@@ -16,9 +15,7 @@ export const imageVariationUseCase = async (originalImage: string): Promise<Gene
                 baseImage: originalImage,
             })
         });
-
         const { url, revised_prompt: alt } = await resp.json();
-
         return { url, alt }
     } catch (error) {
         console.log({ error })

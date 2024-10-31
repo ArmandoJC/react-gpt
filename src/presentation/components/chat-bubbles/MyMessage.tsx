@@ -2,7 +2,6 @@ interface Props {
     text: string;
 }
 
-
 export const MyMessage = ({ text }: Props) => {
     return (
         <div className="col-start-6 col-end-13 p-3 rounded-lg">

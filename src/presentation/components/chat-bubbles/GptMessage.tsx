@@ -1,5 +1,4 @@
 import Markdown from "react-markdown"
-
 interface Props {
     text: string;
 }

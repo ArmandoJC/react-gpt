@@ -14,7 +14,6 @@ export const GptMessageImage = ({ onImageSelected, imageUrl, alt }: Props) => {
                     B
                 </div>
                 <div className="relative ml-3 text-sm bg-black bg-opacity-25 pt-3 pb-2 px-4 shadow rounded-xl">
-                    {/* <span>{text}</span> */}
                     <img
                         src={imageUrl}
                         alt={alt}

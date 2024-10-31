@@ -7,34 +7,17 @@ interface Message {
     isGpt: boolean;
 }
 
-
-
-
 export const ProsConsPage = () => {
-
     const [isLoading, setIsLoading] = useState(false);
     const [messages, setMessages] = useState<Message[]>([])
-
-
     const handlePost = async (text: string) => {
-
         setIsLoading(true);
         setMessages((prev) => [...prev, { text: text, isGpt: false }]);
-
         const { ok, content } = await prosConsUseCase(text);
-
         setIsLoading(false);
-
         if (!ok) return;
-
         setMessages((prev) => [...prev, { text: content, isGpt: true }]);
-
-        // Todo: Añadir el mensaje de isGPT en true
-
-
     }
-
-
 
     return (
         <div className="chat-container">
@@ -42,7 +25,6 @@ export const ProsConsPage = () => {
                 <div className="grid grid-cols-12 gap-y-2">
                     {/* Bienvenida */}
                     <GptMessage text="Puedes escribir lo que sea que quieres que comprare y te dé mis puntos de vista" />
-
                     {
                         messages.map((message, index) => (
                             message.isGpt
@@ -52,11 +34,8 @@ export const ProsConsPage = () => {
                                 : (
                                     <MyMessage key={index} text={message.text} />
                                 )
-
                         ))
                     }
-
-
                     {
                         isLoading && (
                             <div className="col-start-1 col-end-12 fade-in">
@@ -64,18 +43,13 @@ export const ProsConsPage = () => {
                             </div>
                         )
                     }
-
-
                 </div>
             </div>
-
-
             <TextMessageBox
                 onSendMessage={handlePost}
                 placeholder='Escribe aquí lo que deseas'
                 disableCorrections
             />
-
         </div>
     );
 };

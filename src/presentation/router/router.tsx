@@ -68,8 +68,6 @@ export const menuRoutes = [
     },
 ];
 
-
-
 export const router = createBrowserRouter([
     {
         path: "/",

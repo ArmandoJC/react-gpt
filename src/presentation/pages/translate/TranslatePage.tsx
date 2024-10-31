@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { GptMessage, MyMessage, TypingLoader, TextMessageBox, TextMessageBoxSelect } from '../../components';
+import { GptMessage, MyMessage, TypingLoader, TextMessageBoxSelect } from '../../components';
 import { translateTextUseCase } from '../../../core/use-cases';
 
 interface Message {
@@ -20,35 +20,20 @@ const languages = [
     { id: "ruso", text: "Ruso" },
 ];
 
-
 export const TranslatePage = () => {
-
     const [isLoading, setIsLoading] = useState(false);
     const [messages, setMessages] = useState<Message[]>([])
-
-
     const handlePost = async (text: string, selectedOption: string) => {
-
         setIsLoading(true);
-
         const newMessage = `Traduce: "${text}" al idioma ${selectedOption}`
-
-
         setMessages((prev) => [...prev, { text: newMessage, isGpt: false }]);
-
         const { ok, message } = await translateTextUseCase(text, selectedOption)
         setIsLoading(false);
-
         if (!ok) {
             return alert(message);
         }
-
         setMessages((prev) => [...prev, { text: message, isGpt: true }]);
-
-
     }
-
-
 
     return (
         <div className="chat-container">
@@ -56,7 +41,6 @@ export const TranslatePage = () => {
                 <div className="grid grid-cols-12 gap-y-2">
                     {/* Bienvenida */}
                     <GptMessage text="¿Qué quieres que traduzca hoy?" />
-
                     {
                         messages.map((message, index) => (
                             message.isGpt
@@ -66,11 +50,8 @@ export const TranslatePage = () => {
                                 : (
                                     <MyMessage key={index} text={message.text} />
                                 )
-
                         ))
                     }
-
-
                     {
                         isLoading && (
                             <div className="col-start-1 col-end-12 fade-in">
@@ -78,19 +59,13 @@ export const TranslatePage = () => {
                             </div>
                         )
                     }
-
-
                 </div>
             </div>
-
-
             <TextMessageBoxSelect
                 onSendMessage={handlePost}
                 placeholder='Escribe aquí lo que deseas'
-                // disableCorrections
                 options={languages}
             />
-
         </div>
     );
 };

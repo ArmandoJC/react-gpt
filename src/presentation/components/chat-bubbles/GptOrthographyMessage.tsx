@@ -1,5 +1,3 @@
-import Markdown from "react-markdown"
-
 interface Props {
     userScore: number;
     errors: string[];

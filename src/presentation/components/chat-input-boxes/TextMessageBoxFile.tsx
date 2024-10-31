@@ -1,6 +1,5 @@
 import { FormEvent, useRef, useState } from 'react';
 
-
 interface Props {
     onSendMessage: (message: string, file: File) => void;
     placeholder?: string;
@@ -8,24 +7,14 @@ interface Props {
     accept?: string; // image/*
 }
 
-
 export const TextMessageBoxFile = ({ onSendMessage, placeholder, disableCorrections = false, accept }: Props) => {
-
     const [message, setMessage] = useState('');
-
     const [selectedFile, setSelectedFile] = useState<File | null>()
     const inputFileRef = useRef<HTMLInputElement>(null);
 
-
-
-
-
     const handleSendMessage = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        // if (message.trim().length === 0) return;
         if (!selectedFile) return;
-
         onSendMessage(message, selectedFile);
         setMessage('');
         setSelectedFile(null);
@@ -44,7 +33,6 @@ export const TextMessageBoxFile = ({ onSendMessage, placeholder, disableCorrecti
                 >
                     <i className="fa-solid fa-paperclip text-xl"></i>
                 </button>
-
                 <input
                     type="file"
                     ref={inputFileRef}
@@ -52,14 +40,9 @@ export const TextMessageBoxFile = ({ onSendMessage, placeholder, disableCorrecti
                     onChange={(e) => setSelectedFile(e.target.files?.item(0))}
                     hidden
                 />
-
             </div>
-
-
-
             <div className="flex-grow">
                 <div className="relative w-full">
-
                     <input
                         type="text"
                         autoFocus
@@ -72,12 +55,8 @@ export const TextMessageBoxFile = ({ onSendMessage, placeholder, disableCorrecti
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                     />
-
-
                 </div>
             </div>
-
-
             <div className="ml-4">
                 <button
                     className="btn-primary"
@@ -91,10 +70,6 @@ export const TextMessageBoxFile = ({ onSendMessage, placeholder, disableCorrecti
                     <i className="fa-regular fa-paper-plane"></i>
                 </button>
             </div>
-
-
-
-
         </form>
     )
 }
