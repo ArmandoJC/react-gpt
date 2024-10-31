@@ -48,12 +48,15 @@ export const AssistantPage = () => {
         setIsLoading(true);
         setMessages((prev) => [...prev, { text: text, isGpt: false }]);
 
-        //TODO: UseCase
         const replies = await postQuestionUseCase( threadId, text)
-
+        setMessages([]);
         setIsLoading(false);
 
-        // Todo: Añadir el mensaje de isGPT en true
+        for (const reply of replies) {
+            for (const message of reply.content) {
+                setMessages( (prev) => [...prev, {text: message, isGpt: (reply.role === 'assistant'), info: reply }]);
+            }
+        }
 
 
     }
