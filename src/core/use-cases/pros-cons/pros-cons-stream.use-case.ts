@@ -1,4 +1,4 @@
-import type { OrthographyResponse, ProsConsResponse } from "../../interfaces";
+import type { OrthographyResponse, ProsConsResponse } from "../../../interfaces";
 
 
 export const prosConsStreamUseCase = async (prompt: string) => {

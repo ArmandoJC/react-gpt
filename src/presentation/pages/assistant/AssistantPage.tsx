@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GptMessage, MyMessage, TypingLoader, TextMessageBox } from '../../components';
+import { createThreadUseCase } from '../../../core/use-cases';
 
 interface Message {
     text: string;
@@ -13,6 +14,32 @@ export const AssistantPage = () => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [messages, setMessages] = useState<Message[]>([])
+
+
+    const [threadId, setThreadId] = useState<string>();
+
+    //* Obtener el thread y si no existe crearlo
+
+    useEffect(() => {
+        const threadId = localStorage.getItem('threadId');
+
+        if (threadId) {
+            setThreadId(threadId);
+        } else {
+            createThreadUseCase().then(id => {
+                setThreadId(id);
+                localStorage.setItem('threadId', id);
+            })
+        }
+    }, [])
+
+    useEffect(() => {
+        if (threadId) {
+            setMessages((prev) => [...prev, { text: `Número de thread: ${threadId}`, isGpt: true }])
+        }
+    }, [threadId])
+
+
 
 
     const handlePost = async (text: string) => {
@@ -42,7 +69,7 @@ export const AssistantPage = () => {
                         messages.map((message, index) => (
                             message.isGpt
                                 ? (
-                                    <GptMessage key={index} text="Esto es de OpenAI" />
+                                    <GptMessage key={index} text={message.text} />
                                 )
                                 : (
                                     <MyMessage key={index} text={message.text} />
